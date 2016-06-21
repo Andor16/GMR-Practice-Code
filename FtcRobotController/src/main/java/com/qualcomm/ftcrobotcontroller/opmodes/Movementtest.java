@@ -1,6 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.ftcrobotcontroller.opmodes.Drivers.GMRMotor;
+import com.qualcomm.ftcrobotcontroller.opmodes.Drivers.GMRMovement.Direction;
+import com.qualcomm.ftcrobotcontroller.opmodes.Drivers.GMRMovement;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
@@ -9,25 +10,23 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class Movementtest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        GMRGyroTurn turn = new GMRGyroTurn(hardwareMap);
-        GMRMotor move = new GMRMotor(hardwareMap, telemetry);
+        GMRMovement move = new GMRMovement(hardwareMap, telemetry);
         telemetry.addData("Beginning of the program.", "");
         waitForStart();
-        move.move(GMRMotor.Direction.Forward, 65);
+        move.move(Direction.Forward, 65);
         sleep(500);
         move.stop();
-        turn = new GMRGyroTurn(hardwareMap);
         waitForStart();
-        turn.turn(GMRGyroTurn.Direction.Right);
+        move.turn(Direction.Right);
         sleep(500);
-        turn.turn(GMRGyroTurn.Direction.Left);
+        move.turn(Direction.Left);
         sleep(500);
-        turn.turn(GMRGyroTurn.Direction.Right, 45);
+        move.turn(Direction.Right, 45);
         sleep(500);
-        turn.turn(GMRGyroTurn.Direction.Left, 45);
+        move.turn(Direction.Left, 45);
         sleep(500);
-        turn.turn(GMRGyroTurn.Direction.Backward);
+        move.turn(Direction.Backward);
         sleep(500);
-        turn.turn(GMRGyroTurn.Direction.Right, 360);
+        move.turn(Direction.Right, 360);
     }
 }

@@ -1,7 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.kauailabs.navx.ftc.AHRS;
-import com.qualcomm.ftcrobotcontroller.opmodes.Drivers.GMRMotor;
+import com.qualcomm.ftcrobotcontroller.opmodes.Drivers.GMRMovement;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.robocol.Telemetry;
@@ -21,7 +21,7 @@ public class GMRGyroTurn {
 
     private String interruptionMessage;
 
-    private GMRMotor move;
+    private GMRMovement move;
 
     Telemetry tele = new Telemetry();
 
@@ -40,7 +40,7 @@ public class GMRGyroTurn {
                 AHRS.DeviceDataType.kProcessedData);
         interruptionMessage = "You put a number over 180 into turnDegrees";
         tele.addData("Done setting up the object", "");
-        move = new GMRMotor(hm, tele);
+        move = new GMRMovement(hm, tele);
     }
 
     /**
@@ -51,19 +51,22 @@ public class GMRGyroTurn {
      */
     public void turn (Direction dir, int degrees) {
         gyro.zeroYaw();
+        if (degrees ==180) {
+            degrees -= 1;
+        }
         if (degrees > 180) {
             throw new IllegalArgumentException(interruptionMessage);
         }
         if (dir == Direction.Right) {
                 while (gyro.getYaw() < degrees || gyro.getYaw() < 0) {
                     tele.addData("Current Gyroscope position", gyro.getYaw());
-                    move.move(GMRMotor.Direction.Right, 50);
+                    move.move(GMRMovement.Direction.Right, 50);
                     tele.addData("Current Gyro Heading", gyro.getYaw());
                 }
                 move.stop();
         } else if (dir == Direction.Left) {
                 while (-gyro.getYaw() < degrees) {
-                    move.move(GMRMotor.Direction.Left, 50);
+                    move.move(GMRMovement.Direction.Left, 50);
                     tele.addData("Current Gyro Heading", gyro.getYaw());
                 }
                 move.stop();
